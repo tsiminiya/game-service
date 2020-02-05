@@ -11,14 +11,16 @@ import java.util.Optional;
 public class PlayerGatewayImpl implements PlayerGateway {
 
     private final RestTemplate restTemplate;
+    private final String playerServiceUrl;
 
-    public PlayerGatewayImpl(RestTemplate restTemplate) {
+    public PlayerGatewayImpl(RestTemplate restTemplate, String playerServiceUrl) {
         this.restTemplate = restTemplate;
+        this.playerServiceUrl = playerServiceUrl;
     }
 
     @Override
     public Optional<Player> getPlayer(String token) {
-        return Optional.ofNullable(restTemplate.getForObject("/player", PlayerInformation.class, "access_token", token))
+        return Optional.ofNullable(restTemplate.getForObject(playerServiceUrl, PlayerInformation.class, "access_token", token))
                 .map(this::toPlayer);
     }
 
